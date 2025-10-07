@@ -25,6 +25,7 @@ ui <- fluidPage(
                 "Choose a storm to plot",
                 choices=sort(unique(s$name)),
                 selected="Hugo"),
+    checkboxInput("use_custom_icon", "Use custom icons?", value = FALSE),
     fluidRow(height = "90vh",
       column(width = 6,
              bigelow_card(headerContent = "Date vs Wind", 
@@ -50,22 +51,26 @@ server <- function(input, output, session) {
   })
   
   output$storm_track <- renderLeaflet({
-    custom_icon <- makeIcon(
-      iconUrl = "www/images/record.png",  # Path to your image (placed in the www/ directory)
-      iconWidth = 30,             # Adjust width and height as needed
-      iconHeight = 50
-    )
+    data <- stormdata()
     
-    leaflet(data=stormdata()) |>
+    addVariableMarkers <- function(leafletobj) {
+      if (input$use_custom_icon) {
+        custom_icon <- makeIcon(
+          iconUrl = "www/images/record.png",
+          iconWidth = 30,
+          iconHeight = 50
+        )
+        addMarkers(leafletobj, ~long, ~lat, icon = custom_icon)
+      } else {
+        addCircleMarkers(leafletobj, ~long, ~lat, radius = 5, color = "red", fillOpacity = 0.8)
+      }
+    }
+    
+    leaflet(data = data) |>
       addTiles() |>
-      addMarkers(~long, ~lat, icon = custom_icon)
+      addVariableMarkers()
   })
   
 }
 
 shinyApp(ui, server)
-
-# Exercises 
-# 1. Make stormdata a reactive expression that updates based on the user's storm selection
-# 2. Update the app to only plot one storm at a time
-# Extra credit: Add a button below the storm name selection that says "Go". Make the plots only update when the button is pushed.

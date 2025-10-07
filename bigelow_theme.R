@@ -51,7 +51,7 @@ bigelow_theme <- function() {
       max-width: 1200px;
       margin: auto;
       flex-grow: 1;
-      width: 100%
+      width: 100%;
     }
     .footer {
       background-color: var(--bg-accent); 
