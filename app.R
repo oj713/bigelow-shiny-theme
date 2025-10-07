@@ -50,9 +50,15 @@ server <- function(input, output, session) {
   })
   
   output$storm_track <- renderLeaflet({
+    custom_icon <- makeIcon(
+      iconUrl = "www/images/record.png",  # Path to your image (placed in the www/ directory)
+      iconWidth = 30,             # Adjust width and height as needed
+      iconHeight = 50
+    )
+    
     leaflet(data=stormdata()) |>
       addTiles() |>
-      addCircleMarkers(~long, ~lat)
+      addMarkers(~long, ~lat, icon = custom_icon)
   })
   
 }
