@@ -1,0 +1,147 @@
+/**************************************************************** 
+Bigelow Laboratory CSS formatting for R Shiny Websites 
+Omi Johnson, 10/2025
+
+CSS is a formatting language for styling HTML websites. The structure of an R Shiny website allows for 
+styling to be manipulated using CSS formatting. 
+
+In general, CSS consists of specifying an element (by its type, class, or unique ID) and then specifying 
+name-value pairs of styling characteristics. An HTML element has 1 type, can have a unique ID,
+and can have any number of classes.
+
+div.myClass {
+  background-color: red;
+  font-size: 18px;
+  width: 25%;
+}
+
+R Shiny also uses Bootstrap, a CSS library which pre-styles many HTML elements and provides pre-built classes. We can 
+override or add additional rules to Bootstrap styling commands to further customize our website.
+
+Further learning resources to understand CSS, and how to edit this file if it ever breaks: 
+
+[W3Schools CSS Tutorials](https://www.w3schools.com/Css/)
+[Bootstrap Documentation](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
+[A Guide to Flexbox formatting](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+[CSS Specificity: How to override styles](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascade/Specificity)
+
+Right clicking + "Inspect" on most browsers will allow you to interactively explore and manipulate CSS
+styling & organisation of webpages. 
+*****************************************************************/
+
+/* We can define variables in CSS to store common values or attributes. A variable is preceded by "--"
+and can be accessed using var(--variable-name) later on.
+
+These variables are based on standard values on the Bigelow website. */
+:root {
+  --bg: white;
+  --bg-accent: #EAF2F6; /* light blue for backgrounds */
+  --fg: #444;
+  --fg-light: #CCC;
+  --primary: #02A5DD; /* bright blue */
+  --secondary: #1E4E7B; /* dark blue */
+  --tertiary: #81AB1F; /* green blue */
+  --danger: #D83838;
+  --danger-accent: #901515;
+  --font-size: 17px;
+  --line-height: 28px;
+}
+
+/***************** GENERAL ORGANISATION & STYLING OVERRIDES ***************/
+
+/* Selects <body>...</body> element, i.e. entire webpage */
+body {
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+}
+
+/* ">" selects a direct descendant, "." means that we're selecting a class.
+This snippet thus selects an element with class "container-fluid" within body. 
+
+<body>
+  <div class = "container-fluid"> ... </div>
+</body>
+*/
+body > .container-fluid {
+  padding: 0; /* padding is buffer inside of an element */
+  margin: 0; /* margin is buffer outside of an element */
+  display: flex; /* Flexbox styling supports dynamic positioning: see Resources */
+  flex-direction: column;
+  min-height: 100vh; /* "vh" = 1/100 of available vertical screen space. */
+}
+
+/* styling multiple types of elements (headers) at once using commas */
+h1, h2, h3, h4, h5, h6 {
+ font-weight: bold;
+ color: var(--primary);
+}
+
+/***************** BOOTSTRAP STYLE OVERRIDES ***************
+A "card" is a Bootstrap element consisting of content, a header, and a footer 
+(https://getbootstrap.com/docs/4.0/components/card/). By specifying CSS styles here
+we are overriding the defaults for these classes.
+*/
+
+/* Percentage units are relative to the nearest parent with defined sizing or position. */
+.card {height: 100%;}
+.card-header, .card-footer {
+  font-weight: bold; 
+  background-color: var(--secondary);
+  color: var(--bg);
+  height: 2.5em; /* 1 em = body font size */
+  font-size: 1.2em;
+  display: flex;
+  align-items: center; /* Align children vertically within the element */
+}
+.card-body {
+  height: 100%;
+  padding: 0;
+}
+
+/* .form-group is the Bootstrap class applied to input elements (SliderInput, TextInput). 
+This selects <label> elements inside a parent with class .form-group */
+.form-group label {
+  font-weight: bold;
+  color: var(--tertiary);
+  font-size: 1.2em;
+}
+
+/***************** CUSTOM HELPER CLASSES **************
+These are classes encompassing common attributes we can apply to elements in the Shiny App.
+*/
+
+/* Sets the background color to a light blue */
+.bg-accent {
+  background-color: var(--bg-accent);
+}
+
+/* Will space elements horizontally using "justify" logic, vertically centered. */
+.flex-justify {
+ display: flex;
+ flex-direction: horizontal;
+ justify-content: space-between;
+ align-items: center;
+}
+
+/***************** CUSTOM BIGELOW CLASSES ***************/
+
+.bigelow-header {
+ border-bottom: solid 2px var(--fg-light); 
+ padding: 1em; 
+}
+/* Selects all children of elements with class bigelow-header */
+.bigelow-header * { margin: 0; }
+
+.bigelow-main-body{
+  padding: 1em;
+  max-width: 1200px; /* The element will not grow larger than this.*/
+  margin: auto; /* Horizontally centers element */
+  flex-grow: 1; /* Within a containing flexBox, this elem will grow to fit available space. */
+  width: 100%;
+}
+
+.bigelow-footer {
+  background-color: var(--bg-accent); 
+  color: var(--secondary);
+  padding: 3em; 
+}

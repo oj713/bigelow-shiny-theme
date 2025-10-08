@@ -2,86 +2,10 @@ library(bslib)
 
 #' Creates and returns a Bigelow-style theme object for R Shiny.
 bigelow_theme <- function() {
-  # Custom CSS as text. Specifying color variables & basic theming elements, classes
-  bigelow_css <- "
-    :root {
-      --bg: white;
-      --bg-accent: #EAF2F6;
-      --fg: #444;
-      --fg-light: #CCC;
-      --primary: #02A5DD;
-      --secondary: #1E4E7B;
-      --tertiary: #81AB1F;
-      --danger: #D83838;
-      --danger-accent: #901515;
-    }
-    
-    body {
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    
-    body > .container-fluid {
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    
-    h1, h2, h3, h4, h5, h6 {
-      font-weight: bold;
-      color: var(--primary);
-    }
-    
-    .flex-justify {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .header {
-      border-bottom: solid 2px var(--fg-light); 
-      padding: 1em; 
-    }
-    .header * {
-      margin: 0
-    }
-    .main-body{
-      padding: 1em;
-      max-width: 1200px;
-      margin: auto;
-      flex-grow: 1;
-      width: 100%;
-    }
-    .footer {
-      background-color: var(--bg-accent); 
-      color: var(--secondary);
-      padding: 3em; 
-    }
-    .card {height: 100%;}
-    .card-header, .card-footer {
-      font-weight: bold; 
-      background-color: var(--secondary);
-      color: var(--bg);
-      height: 2.5em;
-      font-size: 1.2em;
-      display: flex;
-      align-items: center;
-    }
-    .card-body {
-      height: 100%;
-      padding: 0;
-    }
-    
-    .form-group label {
-      font-weight: bold;
-      color: var(--tertiary);
-      font-size: 1.2em;
-    }
-  "
   
+  # Basic theme object built using bslib. 
   theme_obj <- bslib::bs_theme(
-    version = 5,
+    version = 5, # Bootstrap refernece version
     # Controls the default grayscale palette
     bg = "white", fg = "#444",
     # Controls the accent (e.g., hyperlink, button, etc) colors
@@ -92,10 +16,14 @@ bigelow_theme <- function() {
     base_font = font_collection(font_google("Open Sans", wght = "300..800", local = TRUE), "Roboto", "sans-serif"), 
     code_font = c("Courier", "monospace"),
     heading_font = "Open Sans",
+    # Additional bootstrap variables we're overriding
     "input-border-color" = "#CCCCCC",
     "card-border-radius" = "0",
     "card-inner-border-radius" = "0"
   )
+  
+  # Additional CSS specifies custom rules for classes, additional variables, and styles
+  bigelow_css <- readChar("bigelowStyles.css", nchars = file.info("bigelowStyles.css")$size)
   
   theme_obj |>
     bs_add_rules(bigelow_css)
@@ -107,9 +35,9 @@ bigelow_theme <- function() {
 #' @return div, footer element with bigelow logo.
 bigelow_header <- function(left_hand, right_hand = NULL) {
   if (is.null(right_hand)) {
-    div(class = "header", left_hand)
+    div(class = "bigelow-header", left_hand)
   } else {
-    div(class = c("header", "flex-justify"), left_hand, right_hand)
+    div(class = c("bigelow-header", "flex-justify"), left_hand, right_hand)
   }
 }
 
@@ -118,7 +46,7 @@ bigelow_header <- function(left_hand, right_hand = NULL) {
 #' @param ..., content
 #' @return div, content with wrapped styling
 bigelow_main_body <- function(...) {
-  div(class = "main-body", ...)
+  div(class = "bigelow-main-body", ...)
 }
 
 #' Creates and returns a Bigelow-style footer for an R Shiny application.
@@ -126,7 +54,7 @@ bigelow_main_body <- function(...) {
 #' @param left_hand, div, material to have on left hand side of footer
 #' @return div, footer element with bigelow logo.
 bigelow_footer <- function(left_hand) {
-  div(class = c("footer", "flex-justify"),
+  div(class = c("bigelow-footer", "flex-justify"),
       left_hand,
       img(src='images/bigelow_logo.svg', alt = "Bigelow Laboratory Logo"))
 }

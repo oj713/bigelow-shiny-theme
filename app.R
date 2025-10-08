@@ -14,8 +14,8 @@ s <- storms |>
   mutate(date = as.POSIXct(sprintf("%s-%s-%s %s:00", year, month, day, hour))) 
 
 ui <- fluidPage(
-  theme = bigelow_theme(),
   includeCSS("www/additionalStyles.css"),
+  theme = bigelow_theme(),
   # Header
   bigelow_header(h2("Plotting Storms"),
                  h6("Shiny Tutorial")),
@@ -28,7 +28,7 @@ ui <- fluidPage(
     checkboxInput("use_custom_icon", "Use custom icons?", value = FALSE),
     fluidRow(height = "90vh",
       column(width = 6,
-             bigelow_card(headerContent = "Date vs Wind", 
+             bigelow_card(footerContent = "HELLO", headerContent = NULL, 
                           plotOutput("wind_plot"))),
       column(width = 6,
              bigelow_card(headerContent = "Track of Storm",
