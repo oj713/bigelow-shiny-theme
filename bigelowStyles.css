@@ -185,6 +185,11 @@ Nix rounded corners on pill style tabs
 Underline should be positioned just underneath lower border rather than just abov
 */
 
+/* Nav content will grow to fill the page (assumes presence of bigelow footer) */
+body>.container-fluid>.navbar+.container-fluid:has(>.tab-content>.tab-pane.active.html-fill-container) {
+  flex-grow: 1;
+}
+
 /* Tab-style nav bar styling */
 .tabbable .nav-tabs {
   --bs-nav-tabs-border-width: var(--border-thickness);
@@ -266,23 +271,28 @@ dividing header line (compare to Bigelow website) */
 .well .nav-pills>li>a.active { font-weight: var(--nav-weight); }
 
 /* Dropdown menu styling for navbars */
-.navbar .dropdown-menu {
+.nav-item .dropdown-menu {
     --bs-dropdown-bg: var(--primary);
     --bs-dropdown-link-color: var(--bg);
     --bs-dropdown-link-active-color: var(--bg);
     --bs-dropdown-padding-x:.5em;
-    --bs-dropdown-padding-y: .25em;
+    --bs-dropdown-padding-y: 0em;
+    padding: .5em;
+    color: var(--bg);
     border: none;
 }
-.navbar .dropdown-item, .navbar .dropdown-menu>li>a {
-  padding: 0em .5em;
+/* space list elements apart slightly */
+.nav-item .dropdown-menu>li:not(:last-child) {margin-bottom: 5px;}
+
+/* Add a left border. When hovered or active, display left border as white. */
+.nav-item .dropdown-menu>li>a {
   border-left: solid var(--border-thickness) var(--primary);
+  padding: var(--bs-dropdown-padding-y) var(--bs-dropdown-padding-x);
 }
-.navbar .dropdown-item.active, .navbar .dropdown-menu>li>a.active, .navbar .dropdown-item:active, 
-.navbar .dropdown-menu>li>a:active, .navbar .dropdown-item:hover, .navbar .dropdown-menu>li>a:hover, 
-.navbar .dropdown-item:focus, .navbar .dropdown-menu>li>a:focus {
-    color: var(--bs-dropdown-link-active-color);
-    text-decoration: none;
-    background-color: var(--bs-dropdown-link-active-bg);
-    border-left: solid var(--border-thickness) var(--bg);
+.nav-item .dropdown-menu>li>a.active, .nav-item .dropdown-menu>li>a:active,
+.nav-item .dropdown-menu>li>a:hover {
+  color: var(--bs-dropdown-link-active-color);
+  text-decoration: none;
+  background-color: var(--bs-dropdown-link-active-bg);
+  border-left: solid var(--border-thickness) var(--bg);
 }

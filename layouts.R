@@ -58,11 +58,32 @@ ui2 <- fluidPage(
 
 ui2 <- fluidPage(
   theme = bigelow_theme(), 
-  bigelow_navset_bar(
+  navset_bar(
     title = "Title Item",
     nav_spacer(),
-    nav_panel(title = "One", p("Content 1")),
-    nav_panel(title = "Two", p("Content 2")),
+    nav_panel(title = "One", 
+              p("Content 1"),
+              dateInput("dateSelect", "Choose a date"), 
+              # navset_bar - Full width navigation bar
+              navset_bar(
+                title = "Full Width Navigation Bar",
+                nav_panel("Nav 1", p("Full width nav bar content 1")),
+                nav_panel("Nav 2", p("Full width nav bar content 2")),
+                nav_spacer(),
+                nav_menu("Dropdown",
+                         nav_panel("Sub 1", p("Dropdown item 1")),
+                         nav_panel("Sub 2", p("Dropdown item 2")),
+                         nav_item(tags$a("External Link", href = "#", target = "_blank"))
+                )
+              )),
+    nav_panel(title = "Two", 
+              p("Content 2"),
+              navlistPanel(
+                "Header",
+                tabPanel("First", "hello"),
+                tabPanel("Second", "hllo hter"),
+                tabPanel("Third", "tjdks")
+              )),
     nav_menu("coelenterates",
              nav_item(p("Hello"), nav_item(p("Hello there"))))
   ), 
