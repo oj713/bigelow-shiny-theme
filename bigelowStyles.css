@@ -5,7 +5,7 @@ Omi Johnson, 10/2025
 CSS is a formatting language for styling HTML websites. The structure of an R Shiny website allows for 
 styling to be manipulated using CSS formatting. 
 
-In general, CSS consists of specifying an element (by its type, class, or unique ID) and then specifying 
+In general, CSS consists of specifying an element (by its type, class, role, or unique ID) and then specifying 
 name-value pairs of styling characteristics. An HTML element has 1 type, can have a unique ID,
 and can have any number of classes.
 
@@ -45,6 +45,8 @@ These variables are based on standard values on the Bigelow website. */
   --danger-accent: #901515;
   --font-size: 17px;
   --line-height: 28px;
+  --nav-weight: 600;
+  --border-thickness: 2px;
 }
 
 /***************** GENERAL ORGANISATION & STYLING OVERRIDES ***************/
@@ -71,20 +73,59 @@ body > .container-fluid {
 }
 
 /* styling multiple types of elements (headers) at once using commas */
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, .navbar-header {
  font-weight: bold;
  color: var(--primary);
 }
 
-/***************** BOOTSTRAP STYLE OVERRIDES ***************
+/* links */
+a {color: var(--primary)}
+
+/* Overriding default styles for "well" elements, i.e. sidebar */
+.well {
+  background-color: var(--bg-accent);
+  border-radius: 0px;
+  color: var(--secondary);
+  border: none;
+}
+
+/* .form-group is the Bootstrap class applied to input elements (SliderInput, TextInput). 
+This selects <label> elements directly inside a parent with class .form-group */
+.form-group > label {
+  font-weight: bold;
+  color: var(--tertiary);
+  font-size: 1.2em;
+}
+
+/* overriding default bootstrap variables that control button styling */
+.btn-primary {
+    --bs-btn-color: var(--bg);
+    --bs-btn-hover-color: var(--bg);
+    --bs-btn-active-color: var(--bg);
+}
+.selectize-dropdown .selected {
+    background-color: #02A5DD;
+    color: white !important; /* forces priority */
+}
+
+/* overrides color for slider input */
+.form-group .irs--shiny .irs-single {
+  color: white;
+}
+/* overrides color and shadow for selected date */
+.datepicker table tr td.active {
+  color: white !important;
+  text-shadow: none !important;
+}
+/***************** BIGELOW CARD STYLING CLASSES ***************
 A "card" is a Bootstrap element consisting of content, a header, and a footer 
 (https://getbootstrap.com/docs/4.0/components/card/). By specifying CSS styles here
 we are overriding the defaults for these classes.
 */
 
 /* Percentage units are relative to the nearest parent with defined sizing or position. */
-.card {height: 100%;}
-.card-header, .card-footer {
+.bigelow-card.card {height: 100%;}
+.bigelow-card .card-header, .bigelow-card .card-footer {
   font-weight: bold; 
   background-color: var(--secondary);
   color: var(--bg);
@@ -93,27 +134,14 @@ we are overriding the defaults for these classes.
   display: flex;
   align-items: center; /* Align children vertically within the element */
 }
-.card-body {
+.bigelow-card .card-body {
   height: 100%;
   padding: 0;
-}
-
-/* .form-group is the Bootstrap class applied to input elements (SliderInput, TextInput). 
-This selects <label> elements inside a parent with class .form-group */
-.form-group label {
-  font-weight: bold;
-  color: var(--tertiary);
-  font-size: 1.2em;
 }
 
 /***************** CUSTOM HELPER CLASSES **************
 These are classes encompassing common attributes we can apply to elements in the Shiny App.
 */
-
-/* Sets the background color to a light blue */
-.bg-accent {
-  background-color: var(--bg-accent);
-}
 
 /* Will space elements horizontally using "justify" logic, vertically centered. */
 .flex-justify {
@@ -123,10 +151,10 @@ These are classes encompassing common attributes we can apply to elements in the
  align-items: center;
 }
 
-/***************** CUSTOM BIGELOW CLASSES ***************/
+/***************** MAIN BIGELOW LAYOUT CLASSES ***************/
 
 .bigelow-header {
- border-bottom: solid 2px var(--fg-light); 
+ border-bottom: solid var(--border-thickness) var(--fg-light); 
  padding: 1em; 
 }
 /* Selects all children of elements with class bigelow-header */
@@ -144,4 +172,117 @@ These are classes encompassing common attributes we can apply to elements in the
   background-color: var(--bg-accent); 
   color: var(--secondary);
   padding: 3em; 
+}
+
+/***************** BIGELOW NAVSET BAR OVERRIDE CLASSES **************
+These commands override defined variables or presets in bootstrap nav bars. Variables & selectors are 
+identified by inspecting every_navbar_known_to_man.R
+
+Targeted changes: 
+Unselected color is --primary, selected color is --secondary
+Border color and width align with Bigelow standards
+Nix rounded corners on pill style tabs
+Underline should be positioned just underneath lower border rather than just abov
+*/
+
+/* Tab-style nav bar styling */
+.tabbable .nav-tabs {
+  --bs-nav-tabs-border-width: var(--border-thickness);
+}
+
+/* Pill-style */
+.nav-pills {
+  --bs-nav-pills-border-radius: 0;
+  --bs-nav-pills-link-active-color: var(--bg);
+  --bs-nav-pills-link-active-bg: var(--secondary);
+}
+.nav-pills#hover {
+  color: var(--secondary);
+}
+
+.nav-link {
+  --bs-nav-link-hover-color: var(--secondary);
+  --bs-nav-link-font-size: 1em;
+  --bs-nav-link-font-weight: bold;
+  font-weight: var(--nav-weight); /* I couldn't actually find the font they use on the official website */
+}
+
+/* Underline styling: must account for differing structure for tabbable inline constructions vs full width navbar */
+
+.nav-underline .nav-link:not(:empty).active {
+  font-weight: var(--nav-weight); /* normally they make the weight a little lighter, which is odd */
+}
+/* overriding bootstrap variables lets us alter colors and thickness */
+.navbar, .navbar .navbar-nav {
+  --bs-navbar-brand-color: var(--secondary);
+  --bs-navbar-brand-hover-color: var(--secondary);
+  --bs-nav-link-color: var(--primary);
+  --bs-navbar-active-color: var(--secondary);
+}
+.nav-underline {
+  --bs-link-color: var(--primary);
+  --bs-nav-underline-link-active-color: var(--secondary);
+}
+.tabbable .nav, .navbar {
+  --bs-nav-underline-link-active-color: var(--secondary);
+  border-bottom: solid var(--border-thickness) var(--fg-light);
+  color: var(--primary),
+}
+.navbar-nav .nav-link.active, .navbar-nav .nav-link.active {
+  --bs-nav-underline-link-active-color: var(--secondary);
+  --bs-navbar-active-color: var(--secondary);
+}
+/* bumps the items in an underlined list down so their bottom border is flush underneath the 
+dividing header line (compare to Bigelow website) */
+.nav.nav-underline, .navbar > div {
+  position: relative; 
+  bottom: var(--border-thickness);
+} 
+.nav.nav-underline > *, .navbar > div > * {
+  position: relative; 
+  bottom: calc(-2 * var(--border-thickness));
+} 
+
+/* Sidebar styling */
+.well li.navbar-brand {
+  font-weight: bold;
+  font-size: 1.4em;
+  padding-bottom: .5em;
+}
+.well .nav {
+  --bs-nav-link-padding-x: .5rem;
+  --bs-nav-link-padding-y: 0rem;
+}
+.well .nav-pills {
+  --bs-nav-pills-link-active-color: var(--secondary);
+  --bs-nav-pills-link-active-bg: transparent;
+}
+.well .nav-pills>li>a {
+  border-left: solid 2px var(--bg-accent);
+  margin: 0 0 5px 5px;
+  font-weight: normal;
+}
+.well .nav-pills>li>a:hover { border-left: solid var(--border-thickness) var(--secondary); }
+.well .nav-pills>li>a.active { font-weight: var(--nav-weight); }
+
+/* Dropdown menu styling for navbars */
+.navbar .dropdown-menu {
+    --bs-dropdown-bg: var(--primary);
+    --bs-dropdown-link-color: var(--bg);
+    --bs-dropdown-link-active-color: var(--bg);
+    --bs-dropdown-padding-x:.5em;
+    --bs-dropdown-padding-y: .25em;
+    border: none;
+}
+.navbar .dropdown-item, .navbar .dropdown-menu>li>a {
+  padding: 0em .5em;
+  border-left: solid var(--border-thickness) var(--primary);
+}
+.navbar .dropdown-item.active, .navbar .dropdown-menu>li>a.active, .navbar .dropdown-item:active, 
+.navbar .dropdown-menu>li>a:active, .navbar .dropdown-item:hover, .navbar .dropdown-menu>li>a:hover, 
+.navbar .dropdown-item:focus, .navbar .dropdown-menu>li>a:focus {
+    color: var(--bs-dropdown-link-active-color);
+    text-decoration: none;
+    background-color: var(--bs-dropdown-link-active-bg);
+    border-left: solid var(--border-thickness) var(--bg);
 }

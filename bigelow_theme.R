@@ -15,25 +15,33 @@ bigelow_theme <- function() {
     # Local = TRUE stores the font to local cache, but just in case we specify a fallback font
     base_font = font_collection(font_google("Open Sans", wght = "300..800", local = TRUE), "Roboto", "sans-serif"), 
     code_font = c("Courier", "monospace"),
-    heading_font = "Open Sans",
+    heading_font = font_collection(font_google("Open Sans", wght = "300..800"), "Roboto", "sans-serif"), 
     # Additional bootstrap variables we're overriding
     "input-border-color" = "#CCCCCC",
+    "border-radius" = "0",
+    # Card defaults
     "card-border-radius" = "0",
-    "card-inner-border-radius" = "0"
+    "card-inner-border-radius" = "0",
+    # Navbar defaults
+    "border-color" = "#CCC",
+    "nav-tabs-link-active-color" = "#1E4E7B"
   )
   
   # Additional CSS specifies custom rules for classes, additional variables, and styles
-  bigelow_css <- readChar("bigelowStyles.css", nchars = file.info("bigelowStyles.css")$size)
+  cssPath <- "/mnt/ecocast/projects/students/ojohnson/bigelow-shiny-theme/bigelowStyles.css"
+  bigelow_css <- readChar(cssPath, nchars = file.info(cssPath)$size)
   
   theme_obj |>
     bs_add_rules(bigelow_css)
 }
 
 #' Creates and returns a Bigelow-style header for an R Shiny application.
-#' @param left_hand, div, material to have on left hand side of footer
+#' @param left_hand, div, material to have on left hand side of footer.
+#'  If this is pure text it is parsed to a header element
 #' @param right_hand, div, material to have on right hand side of footer or NULL
 #' @return div, footer element with bigelow logo.
 bigelow_header <- function(left_hand, right_hand = NULL) {
+  if (class(left_hand) == "character") {left_hand <- h2(left_hand)}
   if (is.null(right_hand)) {
     div(class = "bigelow-header", left_hand)
   } else {
@@ -69,7 +77,11 @@ bigelow_card <- function(..., headerContent = NULL, footerContent = NULL) {
   footer_div <- if (is.null(footerContent)) {NULL} else {div(class = "card-footer", footerContent)}
   body <- div(class = "card-body", ...)
   
-  arg_list <- Filter(Negate(is.null), list(class = "card", header_div, body, footer_div))
+  arg_list <- Filter(Negate(is.null), list(class = c("card", "bigelow-card"), header_div, body, footer_div))
   
   do.call(div, arg_list)
 }
+
+
+
+
