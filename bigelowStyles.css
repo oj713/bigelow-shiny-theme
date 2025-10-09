@@ -94,7 +94,6 @@ This selects <label> elements directly inside a parent with class .form-group */
 .form-group > label {
   font-weight: bold;
   color: var(--tertiary);
-  font-size: 1.2em;
 }
 
 /* overriding default bootstrap variables that control button styling */
@@ -212,13 +211,23 @@ body>.container-fluid>.navbar+.container-fluid:has(>.tab-content>.tab-pane.activ
   font-weight: var(--nav-weight); /* I couldn't actually find the font they use on the official website */
 }
 
+/* The SVG image Bigelow uses for hamburger menus is saved to images but I have no clue how to override 
+the default styling. We leave it as grey. */
+.navbar-toggle {
+  border: 1px solid transparent;
+  border-radius: 0;
+  color: var(--fg-light);
+}
+
 /* Underline styling: must account for differing structure for tabbable inline constructions vs full width navbar */
 
 .nav-underline .nav-link:not(:empty).active {
   font-weight: var(--nav-weight); /* normally they make the weight a little lighter, which is odd */
 }
 /* overriding bootstrap variables lets us alter colors and thickness */
-.navbar, .navbar .navbar-nav {
+.navbar, .navbar .navbar-brand, .navbar .navbar-nav {
+  --bslib-navbar-light-bg: var(--bg);
+  --bslib-navbar-dark-bg: var(--bg);
   --bs-navbar-brand-color: var(--secondary);
   --bs-navbar-brand-hover-color: var(--secondary);
   --bs-nav-link-color: var(--primary);
@@ -228,7 +237,7 @@ body>.container-fluid>.navbar+.container-fluid:has(>.tab-content>.tab-pane.activ
   --bs-link-color: var(--primary);
   --bs-nav-underline-link-active-color: var(--secondary);
 }
-.tabbable .nav, .navbar {
+.bslib-page-navbar .navbar, .tabbable .nav, .navbar {
   --bs-nav-underline-link-active-color: var(--secondary);
   border-bottom: solid var(--border-thickness) var(--fg-light);
   color: var(--primary),

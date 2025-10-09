@@ -55,12 +55,7 @@ server <- function(input, output, session) {
     
     addVariableMarkers <- function(leafletobj) {
       if (input$use_custom_icon) {
-        custom_icon <- makeIcon(
-          iconUrl = "www/images/record.png",
-          iconWidth = 30,
-          iconHeight = 50
-        )
-        addMarkers(leafletobj, ~long, ~lat, icon = custom_icon)
+        addRecordMarkers(leafletobj, ~long, ~lat)
       } else {
         addCircleMarkers(leafletobj, ~long, ~lat, radius = 5, color = "red", fillOpacity = 0.8)
       }

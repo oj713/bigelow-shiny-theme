@@ -82,6 +82,46 @@ bigelow_card <- function(..., headerContent = NULL, footerContent = NULL) {
   do.call(div, arg_list)
 }
 
+#' Adds custom Bigelow Laboratory markers to a leaflet map. Wrapper for addMarker
+addRecordMarkers <- function(map, 
+                             lng = NULL,
+                             lat = NULL,
+                             layerId = NULL,
+                             group = NULL,
+                             popup = NULL,
+                             popupOptions = NULL,
+                             label = NULL,
+                             labelOptions = NULL,
+                             options = markerOptions(),
+                             clusterOptions = NULL,
+                             clusterId = NULL,
+                             data = getMapData(map)) {
+  custom_icon <- makeIcon(
+    iconUrl = "www/images/record.png",
+    iconWidth = 21,
+    iconHeight = 28, 
+    iconAnchorX = 10,
+    iconAnchorY = 28
+  )
+  
+  addMarkers(
+    map = map,
+    lng = lng,
+    lat = lat,
+    layerId = layerId,
+    group = group,
+    icon = custom_icon,
+    popup = popup,
+    popupOptions = popupOptions,
+    label = label,
+    labelOptions = labelOptions,
+    options = options,
+    clusterOptions = clusterOptions,
+    clusterId = clusterId,
+    data = data
+  )
+}
+
 
 
 
