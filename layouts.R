@@ -6,6 +6,8 @@ suppressPackageStartupMessages({
   library(shiny)
 })
 
+source("bigelow_theme.R")
+
 ui2 <- fluidPage(
   theme = bigelow_theme(),
   bigelow_header("Hello shiny!"),
